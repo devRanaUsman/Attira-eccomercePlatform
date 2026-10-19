@@ -1,3 +1,7 @@
-import { seed, db } from '../src/server/db.mjs';
-seed();
-console.log(`Database ready: ${db().prepare('SELECT count(*) n FROM products').get().n} products. No default passwords were created.`);
+import { seed, getDb, closeDb } from '../src/server/db.mjs';
+
+await seed();
+const db = await getDb();
+const count = await db.collection('products').countDocuments();
+console.log(`Database ready: ${count} products in MongoDB Atlas. No default passwords were created.`);
+await closeDb();
